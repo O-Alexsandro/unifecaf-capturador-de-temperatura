@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox, font
 from threading import Thread
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -51,13 +52,29 @@ def executar_coleta():
 
     navegador.close()
 
-def executar_coleta_thread():
-    Thread(target=executar_coleta).start()
+def iniciar_thread():
+    Thread(target=executar_coleta, daemon=True).start()
 
 root = tk.Tk()
-root.title("Capturador de Temperatura")
+root.title("🌤️ Capturador de Temperatura")
+root.geometry("350x250")
+root.configure(bg="#87CEEB")  # Azul céu claro
 
-btn = tk.Button(root, text="Pesquisar a temperatura atual", command=executar_coleta_thread)
-btn.pack(padx=20, pady=20)
+# Fonte personalizada
+fonte_titulo = font.Font(family="Helvetica", size=16, weight="bold")
+fonte_texto = font.Font(family="Arial", size=12)
+
+# Título
+lbl_titulo = tk.Label(root, text="🌤️ Capturador de Temperatura", bg="#87CEEB", fg="#ffffff", font=fonte_titulo)
+lbl_titulo.pack(pady=10)
+
+# Botão pesquisar
+btn_pesquisar = tk.Button(root, text="Pesquisar a temperatura atual", font=fonte_texto, bg="#ffcc00", fg="#000000",
+                          activebackground="#ffaa00", padx=10, pady=5, command=iniciar_thread)
+btn_pesquisar.pack(pady=10)
+
+# Label para mostrar resultado
+lbl_resultado = tk.Label(root, text="", bg="#87CEEB", fg="#ffffff", font=fonte_texto, justify="left")
+lbl_resultado.pack(pady=10)
 
 root.mainloop()
